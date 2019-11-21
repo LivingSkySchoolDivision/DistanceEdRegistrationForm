@@ -12,6 +12,9 @@ namespace LSSD.DistanceEdReg
         public DateTime AvailableFrom { get; set; }
         public DateTime AvailableTo { get; set; }
         public string MoreInfoURL { get; set; }
+        public string DeliveryMethod { get; set; }
+        public string PreRequisites { get; set; }
+        public string RequiredMaterials { get; set; }
 
         // Are the teaching materials available for teachers to request, without 
         // having students in a class?

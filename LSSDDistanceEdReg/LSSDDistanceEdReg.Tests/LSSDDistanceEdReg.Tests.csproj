@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <RootNamespace>LSSD.DistanceEdReg.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +13,12 @@
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
     <PackageReference Include="coverlet.collector" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LSSDDistanceEdReg.Data\LSSDDistanceEdReg.Data.csproj" />
+    <ProjectReference Include="..\LSSDDistanceEdReg.Domain\LSSDDistanceEdReg.Domain.csproj" />
+    <ProjectReference Include="..\LSSDDistanceEdReg.Util\LSSDDistanceEdReg.Util.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LSSDDistanceEdReg.Data\LSSDDistanceEdReg.Data.csproj" />
     <ProjectReference Include="..\LSSDDistanceEdReg.Domain\LSSDDistanceEdReg.Domain.csproj" />
+    <ProjectReference Include="..\LSSDDistanceEdReg.Util\LSSDDistanceEdReg.Util.csproj" />
   </ItemGroup>
 
 </Project>

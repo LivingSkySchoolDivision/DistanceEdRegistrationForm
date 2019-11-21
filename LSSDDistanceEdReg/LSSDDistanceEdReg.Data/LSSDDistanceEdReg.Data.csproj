@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>LSSD.DistanceEdReg.Data</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LSSDDistanceEdReg.Domain\LSSDDistanceEdReg.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
