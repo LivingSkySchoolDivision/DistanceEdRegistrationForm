@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>LSSD.DistanceEdReg</RootNamespace>
+    <Authors>Mark Strendin</Authors>
+    <Company>Living Sky School Division No 202</Company>
+    <Product>Living Sky Distance Education Registration</Product>
+  </PropertyGroup>
+
+</Project>

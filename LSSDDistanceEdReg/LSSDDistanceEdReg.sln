@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29409.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSSDDistanceEdReg.Domain", "LSSDDistanceEdReg.Domain\LSSDDistanceEdReg.Domain.csproj", "{7965B6CF-F240-481C-9BD4-8D65B734FF24}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7965B6CF-F240-481C-9BD4-8D65B734FF24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7965B6CF-F240-481C-9BD4-8D65B734FF24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7965B6CF-F240-481C-9BD4-8D65B734FF24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7965B6CF-F240-481C-9BD4-8D65B734FF24}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6863C778-6928-49DC-B53F-A2DCC95EAB92}
+	EndGlobalSection
+EndGlobal
