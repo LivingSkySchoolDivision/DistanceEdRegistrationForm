@@ -1,0 +1,215 @@
+﻿@page
+@using LSSD.DistanceEdReg
+@model LSSDDistanceEdReg.WebFrontEnd.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+
+    // Create a list of courses to use later
+    List<DistanceEdClass> availableClasses = new List<DistanceEdClass>() {
+        new DistanceEdClass() { 
+            ID=1, Name = "Calculus 30 (SCHEDULED)", 
+            AvailableFrom = new DateTime(2019,09,02), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Calculus 30 is taught via video teleconference by Mr. Shaun Ross, daily at 12:45pm, during Semester 2 only. Mentor teacher at student's base school required. Textbook is Calculus 30 by Burt Thiessen." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Physics 30 (SCHEDULED)", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Physics 30 is taught via video teleconference by Mr. Shaun Ross, daily at 10:00am, during semester 2 only. Mentor teacher at student's base school required. Texbook is Pearson Physics 30 ISBN-13: 978-0-13-505048-4." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Computer Science 20 - Semester 1", 
+            AvailableFrom = new DateTime(2019,09,02), 
+            AvailableTo = new DateTime(2020,06,30), 
+            Description = "Asynchronous course, all assessment done by Mr. Shawn Whyte at UCHS." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Computer Science 20 - Semester 2", 
+            AvailableFrom = new DateTime(2019,09,02), 
+            AvailableTo = new DateTime(2020,06,30), 
+            Description = "Asynchronous course, all assessment done by Mr. Shawn Whyte at UCHS." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Computer Science 20 - Full year", 
+            AvailableFrom = new DateTime(2019,09,02), 
+            AvailableTo = new DateTime(2020,06,30), 
+            Description = "Asynchronous course, all assessment done by Mr. Shawn Whyte at UCHS." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Computer Science 30 - Semester 1", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            Description = "Asynchronous course, all assessment done by Mr. Shawn Whyte at UCHS." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Computer Science 30 - Semester 2", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            Description = "Asynchronous course, all assessment done by Mr. Shawn Whyte at UCHS." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Computer Science 30 - Full year", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            Description = "Asynchronous course, all assessment done by Mr. Shawn Whyte at UCHS." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Physchology 20 - Semester 1", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Psychology 20 - Semester 2", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Physchology 30 - Semester 2", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "CWE A30 - Semester 1", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "CWE A30 - Semester 2", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "CWE A30 - Full Year", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Brilliance Credits - Semester 1", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            MoreInfoURL = @"https://portal.lskysd.ca/my/personal/ruth_weber/_layouts/15/WopiFrame.aspx?sourcedoc=/my/personal/ruth_weber/Documents/Discover%20Your%20Brilliance.docx&action=default",
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Brilliance Credits - Semester 2", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            MoreInfoURL = @"https://portal.lskysd.ca/my/personal/ruth_weber/_layouts/15/WopiFrame.aspx?sourcedoc=/my/personal/ruth_weber/Documents/Discover%20Your%20Brilliance.docx&action=default",
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "Brilliance Credits - Full Year", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            MoreInfoURL = @"https://portal.lskysd.ca/my/personal/ruth_weber/_layouts/15/WopiFrame.aspx?sourcedoc=/my/personal/ruth_weber/Documents/Discover%20Your%20Brilliance.docx&action=default",
+            Description = "Mentor teacher at student's base school required. Rubrics and quizzes are provided. Your school determines class time and schedule." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "PAA Module: Robotics and Automation", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "30 Hour module suitable for a PAA survey class. PAA teacher required. Assessment rubrics provided." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "PAA Module: Communications Media Streaming", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "30 Hour module suitable for a PAA survey class. PAA teacher required. Assessment rubrics provided." 
+        },
+        new DistanceEdClass() { 
+            ID=1, Name = "PAA Module: 3D Printing and Design", 
+            AvailableFrom = new DateTime(2020,02,03), 
+            AvailableTo = new DateTime(2020,06,30), 
+            MentorTeacherRequired = true,
+            Description = "30 Hour module suitable for a PAA survey class. PAA teacher required. Assessment rubrics provided." 
+        },
+    };
+}
+
+<h1>Register a student</h1>
+<p>
+    Once submitted, this form is processed by Division Office staff.<br/>
+    You will receive an email when the registration has been complete.<br />
+    Registration may take several business days to complete.
+</p>
+<form method="post" asp-page-handler="Search" style="display: inline;">
+    <table border="0" cellpadding="5" cellspacing="5">
+        <tr>
+            <td valign="top"><b>Student Name</b></td>
+            <td valign="top"><input name="txtStudentName" class="form-control" type="text" style="width: 500px;" placeholder="John Smith" required></td>
+        </tr>
+        <tr>
+            <td valign="top"><b>Student Number</b></td>
+            <td valign="top"><input name="txtStudentNumber" class="form-control" type="text" style="width: 500px;" placeholder="123456789" required></td>
+        </tr>
+        <tr>
+            <td valign="top"><b>Student School</b></td>
+            <td valign="top"><input name="txtStudentSchool" class="form-control" type="text" style="width: 500px;" placeholder="Miskatonic High School" required></td>
+        </tr>
+        <tr>
+            <td valign="top"><b>Course</b></td>
+            <td valign="top">
+                <div style="padding: 10px; padding-top: 0;">
+                    <!-- courses go here -->
+                    @foreach (DistanceEdClass c in availableClasses.OrderBy(x => x.Name))
+                    {
+                        <div class="form-check">
+                            <input name="chkClass_@c.ID" class="form-check-input" type="checkbox" />
+                            <label for="chkClass_@c.ID" class="form-check-label"><b>@c.Name</b>
+                                  @if (!string.IsNullOrEmpty(c.MoreInfoURL))
+                                  {
+                                    <div style="display: inline; font-size: 90%;">(<a href="@c.MoreInfoURL">More info</a>)</div>  
+                                  }
+                                  </label>
+                            @if (!string.IsNullOrEmpty(c.Description))
+                            {
+                                <div style="font-size: 75%;">
+                                    @c.Description
+                                </div>
+                            }
+                            @if (c.MentorTeacherRequired)
+                            {
+                                <div style="font-size: 75%;">
+                                    <label for="txtMentor_@c.ID"><b>Mentor Teacher Name</b></label>
+                                    <input name="txtMentor_@c.ID" type="text" class="form-control form-control-sm" style="width: 300px;" />
+                                </div>
+                            }
+                        </div>
+                        <br />
+                    }
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top"><b>Additional Notes</b></td>
+            <td valign="top"><textarea name="txtNotes" class="form-control"></textarea></td>
+        </tr>
+        <tr>
+            <td cospan="2" align="center" valign="top">
+                <button class="btn btn-primary small" style="margin-left: 10px;">Submit Registration</button>
+            </td>
+        </tr>
+    </table>
+</form>
+
