@@ -14,7 +14,17 @@ pipeline {
             }
         }
         stage('Test') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/dotnet/core/sdk:3.0-buster'
+                    args '-v ${PWD}:/app'
+                }
+            }
             steps {
+                git branch: 'master',
+                    credentialsId: 'JENKINS-AZUREDEVOPS',
+                    url: 'git@ssh.dev.azure.com:v3/LivingSkySchoolDivision/DistanceEdReg/DistanceEdReg'
+
                 dir("LSSDDistanceEdReg"){
                     sh 'dotnet build'
                     sh 'dotnet test'
