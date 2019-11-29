@@ -9,9 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSSDDistanceEdReg.Tests", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSSDDistanceEdReg.WebFrontEnd", "LSSDDistanceEdReg.WebFrontEnd\LSSDDistanceEdReg.WebFrontEnd.csproj", "{DA59063C-03D2-4BF7-99C3-D4AC46A74678}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSSDDistanceEdReg.Data", "LSSDDistanceEdReg.Data\LSSDDistanceEdReg.Data.csproj", "{2A334861-B1FB-4A78-8A6B-0FD6D4C1D850}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSSDDistanceEdReg.Data", "LSSDDistanceEdReg.Data\LSSDDistanceEdReg.Data.csproj", "{2A334861-B1FB-4A78-8A6B-0FD6D4C1D850}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LSSDDistanceEdReg.Util", "LSSDDistanceEdReg.Util\LSSDDistanceEdReg.Util.csproj", "{046721CA-0686-47A9-8C0A-8ECF8139D6F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LSSDDistanceEdReg.Util", "LSSDDistanceEdReg.Util\LSSDDistanceEdReg.Util.csproj", "{046721CA-0686-47A9-8C0A-8ECF8139D6F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BFDCDC74-9C91-4495-A5D2-B0A35448B7E9}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
