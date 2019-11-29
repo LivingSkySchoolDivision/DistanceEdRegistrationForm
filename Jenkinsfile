@@ -13,6 +13,14 @@ pipeline {
                     url: 'git@ssh.dev.azure.com:v3/LivingSkySchoolDivision/DistanceEdReg/DistanceEdReg'
             }
         }
+        stage('Test') {
+            steps {
+                dir("LSSDDistanceEdReg"){
+                    sh 'dotnet build'
+                    sh 'dotnet test'
+                }
+            }
+        }
         stage('Docker build') {
             steps {
                 dir("LSSDDistanceEdReg"){
