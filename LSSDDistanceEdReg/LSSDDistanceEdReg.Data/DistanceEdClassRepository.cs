@@ -19,6 +19,7 @@ namespace LSSD.DistanceEdReg.Data
                     AvailableFrom = new DateTime(2019, 09, 02),
                     AvailableTo = new DateTime(2020, 06, 30),
                     MentorTeacherRequired = true,
+                    MoreInfoURL = @"https://lskysd.scholantistest.com/apps/pages/index.jsp?uREC_ID=1091153&type=d&pREC_ID=1367702",
                     Description = "Calculus 30 is taught via video teleconference by Mr. Shaun Ross, daily at 12:45pm, during Semester 2 only. Mentor teacher at student's base school required. Textbook is Calculus 30 by Burt Thiessen."
                 },
                 new DistanceEdClass()
