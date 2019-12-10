@@ -9,8 +9,7 @@ pipeline {
         stage('Git clone') {
             steps {
                 git branch: 'master',
-                    credentialsId: 'JENKINS-AZUREDEVOPS',
-                    url: 'git@ssh.dev.azure.com:v3/LivingSkySchoolDivision/DistanceEdReg/DistanceEdReg'
+                    url: 'https://sourcecode.lskysd.ca/PublicCode/DistanceEdRegistrationForm.git'
             }
         }
         stage('Test') {
@@ -22,8 +21,7 @@ pipeline {
             }
             steps {
                 git branch: 'master',
-                    credentialsId: 'JENKINS-AZUREDEVOPS',
-                    url: 'git@ssh.dev.azure.com:v3/LivingSkySchoolDivision/DistanceEdReg/DistanceEdReg'
+                    url: 'https://sourcecode.lskysd.ca/PublicCode/DistanceEdRegistrationForm.git'
 
                 dir("LSSDDistanceEdReg"){
                     sh 'dotnet build'
