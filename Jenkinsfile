@@ -15,7 +15,7 @@ pipeline {
         stage('Test') {
             agent {
                 docker {
-                    image 'mcr.microsoft.com/dotnet/core/sdk:3.0-buster'
+                    image 'mcr.microsoft.com/dotnet/core/sdk:3.1"
                     args '-v ${PWD}:/app'
                 }
             }
