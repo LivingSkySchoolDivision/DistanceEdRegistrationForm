@@ -109,7 +109,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd.Pages
 
                 if (regErrors.Count == 0)
                 {
-                    return RedirectToPage("/Thanks");
+                    return RedirectToPage("Thanks");
                 }
                 else
                 {
