@@ -19,4 +19,5 @@ RUN dotnet publish "LSSDDistanceEdReg.WebFrontEnd.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+COPY LSSDDistanceEdReg.WebFrontEnd/Images/ /app/Images/
 ENTRYPOINT ["dotnet", "LSSDDistanceEdReg.WebFrontEnd.dll"]
