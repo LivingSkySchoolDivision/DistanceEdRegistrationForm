@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LSSDDistanceEdReg.Domain\LSSDDistanceEdReg.Domain.csproj" />
+    <ProjectReference Include="..\LSSDDistanceEdReg.Util\LSSDDistanceEdReg.Util.csproj" />
   </ItemGroup>
 
 </Project>

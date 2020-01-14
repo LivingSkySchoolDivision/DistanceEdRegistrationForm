@@ -9,8 +9,10 @@ namespace LSSD.DistanceEdReg
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime AvailableFrom { get; set; }
-        public DateTime AvailableTo { get; set; }
+        public DateTime Starts { get; set; }
+        public DateTime Ends { get; set; }
+        public DateTime RegistrationAvailableFrom { get; set; }
+        public DateTime RegistrationAvailableTo { get; set; }
         public string MoreInfoURL { get; set; }
         public string DeliveryMethod { get; set; }
         public string PreRequisites { get; set; }
