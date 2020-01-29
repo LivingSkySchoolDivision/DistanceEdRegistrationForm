@@ -10,32 +10,46 @@ namespace LSSD.DistanceEdReg.Data
     public class DistanceEdRequestRepository : IDisposable
     {
         private readonly string _connStr = string.Empty;
-        private DistanceEdClassRepository _classRepo;
+        private Dictionary<int, DistanceEdClass> _classCache = new Dictionary<int, DistanceEdClass>();
 
         public DistanceEdRequestRepository(string ConnectionString)
         {
             this._connStr = ConnectionString;
-            this._classRepo = new DistanceEdClassRepository(ConnectionString);
+
+
+            DistanceEdClassRepository _classRepo = new DistanceEdClassRepository(ConnectionString);
+            foreach(DistanceEdClass dec in _classRepo.GetAllClasses())
+            {
+                _classCache.Add(dec.ID, dec);
+            }
+            
         }
 
         private DistanceEdRequest dataReaderToDistanceEdRequest(SqlDataReader dataReader)
         {
             int ID = dataReader["id"].ToString().Trim().ToInt();
-            
-            return new DistanceEdRequest()
+            int CourseID = dataReader["CourseId"].ToString().Trim().ToInt();
+
+            if (_classCache.ContainsKey(CourseID))
             {
-                ID = ID,
-                StudentName = dataReader["StudentName"].ToString().Trim(),
-                StudentNumber = dataReader["StudentNumber"].ToString().Trim(),
-                StudentBaseSchool = dataReader["StudentSchool"].ToString().Trim(),
-                Comments = dataReader["Comments"].ToString().Trim(),
-                CourseID = dataReader["CourseId"].ToString().Trim().ToInt(),
-                MentorTeacherName = dataReader["MentorTeacherName"].ToString().Trim(),
-                Requestor = dataReader["Requestor"].ToString().Trim(),
-                DateRequested = dataReader["DateRequested"].ToString().Trim().ToDateTime(),
-                HelpDeskNotificationSent = dataReader["NotificationSentToHelpDesk"].ToString().Trim().ToBool(),
-                DistanceEdClass = _classRepo.Get(ID)
-            };
+                return new DistanceEdRequest()
+                {
+                    ID = ID,
+                    StudentName = dataReader["StudentName"].ToString().Trim(),
+                    StudentNumber = dataReader["StudentNumber"].ToString().Trim(),
+                    StudentBaseSchool = dataReader["StudentSchool"].ToString().Trim(),
+                    Comments = dataReader["Comments"].ToString().Trim(),
+                    CourseID = CourseID,
+                    MentorTeacherName = dataReader["MentorTeacherName"].ToString().Trim(),
+                    Requestor = dataReader["Requestor"].ToString().Trim(),
+                    DateRequested = dataReader["DateRequested"].ToString().Trim().ToDateTime(),
+                    HelpDeskNotificationSent = dataReader["NotificationSentToHelpDesk"].ToString().Trim().ToBool(),
+                    DistanceEdClass = _classCache[CourseID]
+                };
+            }
+
+            throw new Exception("Couldn't find corresponding class for ID " + dataReader["CourseId"].ToString());
+            return null;            
         }
 
         public void AddNewRequests(List<DistanceEdRequest> NewRequests)

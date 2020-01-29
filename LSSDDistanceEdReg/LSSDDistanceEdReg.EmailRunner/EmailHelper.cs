@@ -86,12 +86,18 @@ namespace LSSDDistanceEdReg.EmailRunner
                         body.Append("</p>");
                         body.Append("<p>");
                         body.Append("<b>Mentor Teacher Name</b>: " + request.MentorTeacherName + "<br>");
-                        body.Append("</p>");
+                        body.Append("</p>");                        
                         body.Append("<p>");
-                        body.Append("<b>Course Name</b>: " + (request.DistanceEdClass.Name ?? "Unknown") + "<br>");
-                        body.Append("<b>Course Blackboard ID</b>: " + (request.DistanceEdClass.BlackboardID ?? "Unknown") + "<br>");
-                        body.Append("<b>Course Start Date</b>: " + (request.DistanceEdClass.Starts.ToLongDateString() ?? "Unknown") +"<br>");
-                        body.Append("<b>Course End Date</b>: " + (request.DistanceEdClass.Ends.ToLongDateString() ?? "Unknown") +"<br>");
+                        if (request.DistanceEdClass != null)
+                        {
+                            body.Append("<b>Course Name</b>: " + (request.DistanceEdClass.Name ?? "Unknown") + "<br>");
+                            body.Append("<b>Course Blackboard ID</b>: " + (request.DistanceEdClass.BlackboardID ?? "Unknown") + "<br>");
+                            body.Append("<b>Course Start Date</b>: " + (request.DistanceEdClass.Starts.ToLongDateString() ?? "Unknown") +"<br>");
+                            body.Append("<b>Course End Date</b>: " + (request.DistanceEdClass.Ends.ToLongDateString() ?? "Unknown") +"<br>");
+                        } else
+                        {
+                            body.Append("This registration is for course with database ID \"" + request.CourseID + "\", but a course with that ID was not found in the database. You may need to investigate.");
+                        }                        
                         body.Append("</p>");
                         body.Append("<p>This message comes from an unmonitored email account. Do not reply to this message.</p>");
                         body.Append("</body>");
@@ -107,7 +113,13 @@ namespace LSSDDistanceEdReg.EmailRunner
                             }
 
                             msg.Body = body.ToString();
-                            msg.Subject = "Distance Ed Request for " + request.StudentName + " for class " + request.ID;
+                            if (request.DistanceEdClass != null)
+                            {
+                                msg.Subject = "Distance Ed Request for " + request.StudentName + " for " + request.DistanceEdClass.Name;
+                            } else
+                            {
+                                msg.Subject = "Distance Ed Request for " + request.StudentName + " for class with database ID \"" + request.ID + "\"";
+                            }
                             msg.From = new MailAddress(this.fromaddress, "Distance Ed Registration Form");
                             msg.ReplyToList.Add(new MailAddress(this.replyToAddress, "Distance Ed Registration Form"));
                             msg.IsBodyHtml = true;
@@ -118,7 +130,7 @@ namespace LSSDDistanceEdReg.EmailRunner
                         catch (Exception ex)
                         {
                             // Log a failure
-                            throw ex;
+                            throw new Exception("Error sending email for request ID " + request.ID, ex);
                         }
                     }
 

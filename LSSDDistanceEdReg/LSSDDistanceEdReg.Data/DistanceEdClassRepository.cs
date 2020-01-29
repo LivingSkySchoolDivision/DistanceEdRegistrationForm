@@ -23,7 +23,7 @@ namespace LSSD.DistanceEdReg.Data
         }        
 
         private DistanceEdClass dataReaderToDistanceEdClass(SqlDataReader dataReader)
-        {                
+        {   
             return new DistanceEdClass()
             {
                 ID = Parsers.ToInt(dataReader["id"].ToString()),
@@ -78,7 +78,7 @@ namespace LSSD.DistanceEdReg.Data
             return returnMe;
         }
 
-        public List<DistanceEdClass> GetAllClasses(DateTime ReferenceDate)
+        public List<DistanceEdClass> GetAllClasses()
         {
             List<DistanceEdClass> returnMe = new List<DistanceEdClass>();
 
