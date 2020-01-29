@@ -3,6 +3,7 @@ pipeline {
     environment {
         REPO = "distanceed/distanceedregistration"
         PRIVATE_REPO = "${PRIVATE_DOCKER_REGISTRY}/${REPO}"
+        PRIVATE_REPO_EMR = "${PRIVATE_DOCKER_REGISTRY}/${REPO}-emailrunner"
         TAG = "${BUILD_TIMESTAMP}"
     }
     stages {
@@ -32,7 +33,8 @@ pipeline {
         stage('Docker build') {
             steps {
                 dir("LSSDDistanceEdReg"){
-                    sh "docker build --no-cache -t ${PRIVATE_REPO}:latest -t ${PRIVATE_REPO}:${TAG} ."
+                    sh "docker build --no-cache -f Dockerfile-WebFrontEnd -t ${PRIVATE_REPO}:latest -t ${PRIVATE_REPO}:${TAG} ."
+                    sh "docker build --no-cache -f Dockerfile-EmailRunner -t ${PRIVATE_REPO}:latest -t ${PRIVATE_REPO}:${TAG} ."
                 }
             }
         }
@@ -40,6 +42,8 @@ pipeline {
             steps {
                 sh "docker push ${PRIVATE_REPO}:${TAG}"
                 sh "docker push ${PRIVATE_REPO}:latest"
+                sh "docker push ${PRIVATE_REPO_EMR}:${TAG}"
+                sh "docker push ${PRIVATE_REPO_EMR}:latest"
             }
         }
     }

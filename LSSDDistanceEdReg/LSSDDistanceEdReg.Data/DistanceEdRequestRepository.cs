@@ -7,13 +7,35 @@ using System.Text;
 
 namespace LSSD.DistanceEdReg.Data
 {
-    public class DistanceEdRequestRepository
+    public class DistanceEdRequestRepository : IDisposable
     {
         private readonly string _connStr = string.Empty;
+        private DistanceEdClassRepository _classRepo;
 
         public DistanceEdRequestRepository(string ConnectionString)
         {
             this._connStr = ConnectionString;
+            this._classRepo = new DistanceEdClassRepository(ConnectionString);
+        }
+
+        private DistanceEdRequest dataReaderToDistanceEdRequest(SqlDataReader dataReader)
+        {
+            int ID = dataReader["id"].ToString().Trim().ToInt();
+            
+            return new DistanceEdRequest()
+            {
+                ID = ID,
+                StudentName = dataReader["StudentName"].ToString().Trim(),
+                StudentNumber = dataReader["StudentNumber"].ToString().Trim(),
+                StudentBaseSchool = dataReader["StudentSchool"].ToString().Trim(),
+                Comments = dataReader["Comments"].ToString().Trim(),
+                CourseID = dataReader["CourseId"].ToString().Trim().ToInt(),
+                MentorTeacherName = dataReader["MentorTeacherName"].ToString().Trim(),
+                Requestor = dataReader["Requestor"].ToString().Trim(),
+                DateRequested = dataReader["DateRequested"].ToString().Trim().ToDateTime(),
+                HelpDeskNotificationSent = dataReader["NotificationSentToHelpDesk"].ToString().Trim().ToBool(),
+                DistanceEdClass = _classRepo.Get(ID)
+            };
         }
 
         public void AddNewRequests(List<DistanceEdRequest> NewRequests)
@@ -46,10 +68,85 @@ namespace LSSD.DistanceEdReg.Data
             }
         }
 
+        public void MarkAsHelpDeskNotified(int id)
+        {
+            MarkAsHelpDeskNotified(new List<int>() { id });
+        }
+
+        public void MarkAsHelpDeskNotified(List<int> ids)
+        {
+            if (ids.Count > 0)
+            {
+                using (SqlConnection connection = new SqlConnection(_connStr))
+                {
+                    foreach (int id in ids)
+                    {
+                        using (SqlCommand sqlCommand = new SqlCommand
+                        {
+                            Connection = connection,
+                            CommandType = CommandType.Text,
+                            CommandText = "UPDATE DistanceEdRequest SET NOtificationSentToHelpDesk=1 WHERE id=@RID"
+                        })
+                        {
+                            sqlCommand.Parameters.Clear();
+                            sqlCommand.Parameters.AddWithValue("@RID", id);
+                            sqlCommand.Connection.Open();
+                            sqlCommand.ExecuteNonQuery();
+                            sqlCommand.Connection.Close();
+                        }
+                    }
+                }
+            }
+        }
+
+        public void MarkAsHelpDeskNotified(DistanceEdRequest request)
+        {
+            MarkAsHelpDeskNotified(request.ID);
+        }
+
+        public List<DistanceEdRequest> GetRequestsRequiringNotification()
+        {
+            List<DistanceEdRequest> returnMe = new List<DistanceEdRequest>();
+
+            using (SqlConnection connection = new SqlConnection(_connStr))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand
+                {
+                    Connection = connection,
+                    CommandType = CommandType.Text,
+                    CommandText = "SELECT TOP 25 * FROM DistanceEdRequest WHERE NotificationSentToHelpDesk=0"
+                })
+                {
+                    sqlCommand.Connection.Open();
+                    SqlDataReader dbDataReader = sqlCommand.ExecuteReader();
+
+                    if (dbDataReader.HasRows)
+                    {
+                        while (dbDataReader.Read())
+                        {
+                            DistanceEdRequest obj = dataReaderToDistanceEdRequest(dbDataReader);
+                            if (obj != null)
+                            {
+                                returnMe.Add(obj);
+                            }
+                        }
+                    }
+
+                    sqlCommand.Connection.Close();
+                }
+            }
+
+            return returnMe;
+        }
+
         public void AddNewRequest(DistanceEdRequest NewRequest)
         {
             AddNewRequests(new List<DistanceEdRequest>() { NewRequest });
         }
 
+        public void Dispose()
+        {
+            
+        }
     }
 }
