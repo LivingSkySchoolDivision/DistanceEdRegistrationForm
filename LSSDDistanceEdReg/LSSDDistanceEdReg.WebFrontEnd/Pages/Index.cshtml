@@ -87,8 +87,13 @@
                         <td valign="top"><b>Course</b></td>
                         <td valign="top">
                             <b>@displayedClass.Name</b><br />
+                            <div style="padding-left: 10px; font-size: 75%">
+                                <b>Course starts: </b>@displayedClass.Starts.ToLongDateString()<br />
+                                <b>Course ends: </b>@displayedClass.Ends.ToLongDateString()<br />
+                            </div>
                             @if (!string.IsNullOrEmpty(displayedClass.Description))
                             {
+                                <br/>
                                 <div style="font-size: 75%;">
                                     @displayedClass.Description
                                 </div>
