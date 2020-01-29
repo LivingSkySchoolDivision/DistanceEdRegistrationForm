@@ -34,7 +34,7 @@ pipeline {
             steps {
                 dir("LSSDDistanceEdReg"){
                     sh "docker build --no-cache -f Dockerfile-WebFrontEnd -t ${PRIVATE_REPO}:latest -t ${PRIVATE_REPO}:${TAG} ."
-                    sh "docker build --no-cache -f Dockerfile-EmailRunner -t ${PRIVATE_REPO}:latest -t ${PRIVATE_REPO}:${TAG} ."
+                    sh "docker build --no-cache -f Dockerfile-EmailRunner -t ${PRIVATE_REPO_EMR}:latest -t ${PRIVATE_REPO_EMR}:${TAG} ."
                 }
             }
         }
