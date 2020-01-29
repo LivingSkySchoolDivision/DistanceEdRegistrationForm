@@ -10,17 +10,21 @@ namespace LSSD.DistanceEdReg.Data
     public class DistanceEdRequestRepository : IDisposable
     {
         private readonly string _connStr = string.Empty;
+        private DistanceEdClassRepository _classRepo;
 
         public DistanceEdRequestRepository(string ConnectionString)
         {
             this._connStr = ConnectionString;
+            this._classRepo = new DistanceEdClassRepository(ConnectionString);
         }
 
         private DistanceEdRequest dataReaderToDistanceEdRequest(SqlDataReader dataReader)
         {
+            int ID = dataReader["id"].ToString().Trim().ToInt();
+            
             return new DistanceEdRequest()
             {
-                ID = dataReader["id"].ToString().Trim().ToInt(),
+                ID = ID,
                 StudentName = dataReader["StudentName"].ToString().Trim(),
                 StudentNumber = dataReader["StudentNumber"].ToString().Trim(),
                 StudentBaseSchool = dataReader["StudentSchool"].ToString().Trim(),
@@ -29,7 +33,8 @@ namespace LSSD.DistanceEdReg.Data
                 MentorTeacherName = dataReader["MentorTeacherName"].ToString().Trim(),
                 Requestor = dataReader["Requestor"].ToString().Trim(),
                 DateRequested = dataReader["DateRequested"].ToString().Trim().ToDateTime(),
-                HelpDeskNotificationSent = dataReader["NotificationSentToHelpDesk"].ToString().Trim().ToBool()
+                HelpDeskNotificationSent = dataReader["NotificationSentToHelpDesk"].ToString().Trim().ToBool(),
+                DistanceEdClass = _classRepo.Get(ID)
             };
         }
 
@@ -109,7 +114,7 @@ namespace LSSD.DistanceEdReg.Data
                 {
                     Connection = connection,
                     CommandType = CommandType.Text,
-                    CommandText = "SELECT TOP 5 * FROM DistanceEdRequest WHERE NotificationSentToHelpDesk=0"
+                    CommandText = "SELECT TOP 25 * FROM DistanceEdRequest WHERE NotificationSentToHelpDesk=0"
                 })
                 {
                     sqlCommand.Connection.Open();

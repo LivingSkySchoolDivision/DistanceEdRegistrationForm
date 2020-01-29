@@ -16,5 +16,7 @@ namespace LSSD.DistanceEdReg
         public string Requestor { get; set; }
         public DateTime DateRequested { get; set; }
         public bool HelpDeskNotificationSent { get; set; }
+
+        public DistanceEdClass DistanceEdClass { get; set; }
     }
 }

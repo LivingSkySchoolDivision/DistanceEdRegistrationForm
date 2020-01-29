@@ -17,6 +17,7 @@ namespace LSSD.DistanceEdReg
         public string DeliveryMethod { get; set; }
         public string PreRequisites { get; set; }
         public string RequiredMaterials { get; set; }
+        public string BlackboardID { get; set; }
 
         // Are the teaching materials available for teachers to request, without 
         // having students in a class?

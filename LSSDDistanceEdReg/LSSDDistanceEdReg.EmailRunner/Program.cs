@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.AzureKeyVault;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
@@ -55,32 +56,39 @@ namespace LSSDDistanceEdReg.EmailRunner
                 ConsoleWrite("EmailRunner starting main loop...");
                 while (true)
                 {
-                    using (DistanceEdRequestRepository requestRepository = new DistanceEdRequestRepository(dbConnectionString))
+                    try
                     {
-                        List<DistanceEdRequest> requestsNeedingNotification = requestRepository.GetRequestsRequiringNotification();
-
-                        EmailHelper email = new EmailHelper(smtpConfig["hostname"], smtpConfig["port"].ToInt(), smtpConfig["username"], smtpConfig["password"], smtpConfig["fromaddress"], smtpConfig["replytoaddress"]);                        
-
-                        if (requestsNeedingNotification.Count > 0)
+                        using (DistanceEdRequestRepository requestRepository = new DistanceEdRequestRepository(dbConnectionString))
                         {
-                            ConsoleWrite("Found " + requestsNeedingNotification.Count + " requests needing notifications");
-                            foreach(DistanceEdRequest r in requestsNeedingNotification )
+                            List<DistanceEdRequest> requestsNeedingNotification = requestRepository.GetRequestsRequiringNotification();
+                            EmailHelper email = new EmailHelper(smtpConfig["hostname"], smtpConfig["port"].ToInt(), smtpConfig["username"], smtpConfig["password"], smtpConfig["fromaddress"], smtpConfig["replytoaddress"]);
+                            List<string> helpDeskEmailAddresses = smtpConfig["HelpDeskEmail"].Split(new char[] { ';', ',' }).ToList();
+
+                            if (requestsNeedingNotification.Count > 0)
                             {
-                                ConsoleWrite("Enqueing notifcation for request ID " + r.ID);
-                                email.NewMessage(r);
-                            }                            
-                        } else
-                        {
-                            ConsoleWrite("No new requests found");
+                                ConsoleWrite("Found " + requestsNeedingNotification.Count + " requests needing notifications");
+                                foreach (DistanceEdRequest r in requestsNeedingNotification)
+                                {
+                                    ConsoleWrite("Enqueing notifcation for request ID " + r.ID);
+                                    email.NewMessage(r);
+                                }
+                            }
+                            else
+                            {
+                                ConsoleWrite("No new requests found");
+                            }
+
+                            Console.WriteLine("Sending...");
+                            List<int> successfulIDs = email.SendAll(helpDeskEmailAddresses);
+
+                            Console.WriteLine("Marking " + successfulIDs.Count + " as successes");
+                            requestRepository.MarkAsHelpDeskNotified(successfulIDs);
                         }
-
-                        Console.WriteLine("Sending...");
-                        List<int> successfulIDs = email.SendAll();
-
-                        Console.WriteLine("Marking " + successfulIDs.Count + " as successes");
-                        requestRepository.MarkAsHelpDeskNotified(successfulIDs);
+                    } 
+                    catch(Exception ex)
+                    {
+                        ConsoleWrite("ERROR: " + ex.Message);
                     }
-
                     ConsoleWrite("Done!");
                     ConsoleWrite("Sleeping for " + sleepTimeMinutes + " minutes...");
 
