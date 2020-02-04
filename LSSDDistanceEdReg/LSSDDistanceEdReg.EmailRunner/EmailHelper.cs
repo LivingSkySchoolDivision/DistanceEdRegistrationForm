@@ -99,6 +99,7 @@ namespace LSSDDistanceEdReg.EmailRunner
                             body.Append("This registration is for course with database ID \"" + request.CourseID + "\", but a course with that ID was not found in the database. You may need to investigate.");
                         }                        
                         body.Append("</p>");
+                        body.Append("<p><b>Comments:<br>" + request.Comments + "</p>");
                         body.Append("<p>This message comes from an unmonitored email account. Do not reply to this message.</p>");
                         body.Append("</body>");
                         body.Append("</html>");
