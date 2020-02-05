@@ -30,7 +30,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {/*
+        {
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -48,7 +48,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 options.GetClaimsFromUserInfoEndpoint = true;
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
-                options.SaveTokens = true;
+                options.SaveTokens = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     NameClaimType = "name",
@@ -57,16 +57,16 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 };
             });
             services.AddAuthorization(); 
-            */
-            services.AddRazorPages();/*.AddRazorPagesOptions(options => {
+            
+            services.AddRazorPages().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizeFolder("/Admin");
-            });*/
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            /*
+            
             if (env.IsDevelopment())
             {
                app.UseDeveloperExceptionPage(); 
@@ -74,8 +74,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
             else
             {
                 app.UseExceptionHandler("/Error");
-            }*/
-            app.UseDeveloperExceptionPage();
+            }
 
             app.UseStaticFiles();
 
