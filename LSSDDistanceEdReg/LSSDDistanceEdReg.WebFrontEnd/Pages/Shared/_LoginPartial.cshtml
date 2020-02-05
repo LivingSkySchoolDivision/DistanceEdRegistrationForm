@@ -1,0 +1,15 @@
+﻿@if (User.Identity.IsAuthenticated)
+{
+    <ul class="navbar-nav">
+        <li>
+            <span class="navbar-text">@User.Identity.Name</span>
+            <!--<a onclick="document.getelementById('logout_form').submit();">Logout</a>-->
+        </li>
+    </ul>
+}
+else
+{
+    <ul class="navbar-nav">
+        <li><i>Not signed in</i></li>
+    </ul>
+}

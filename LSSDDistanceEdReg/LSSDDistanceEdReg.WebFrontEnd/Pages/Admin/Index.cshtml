@@ -1,0 +1,114 @@
+﻿@page
+@using LSSD.DistanceEdReg
+@using LSSD.DistanceEdReg.Data
+@using LSSD.DistanceEdReg.Util
+@model LSSDDistanceEdReg.WebFrontEnd.IndexModel
+@inject IConfiguration config
+@using Microsoft.Extensions.Configuration;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+
+    DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
+    List<DistanceEdClass> allClasses = classesRepo.GetAllClasses();
+    List<DistanceEdClass> availableClasses = classesRepo.GetAvailableClasses(DateTime.Now);
+
+    DistanceEdRequestRepository requestRepo = new DistanceEdRequestRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
+    List<DistanceEdRequest> allRequests = requestRepo.GetAll();
+
+    List<string> uniqueStudents = new List<string>();
+    List<string> uniqueStudentsActive = new List<string>();
+
+    Dictionary<int, DistanceEdClass> classDict = allClasses.ToDictionary(x => x.ID);
+    Dictionary<int, List<DistanceEdRequest>> requestsByClass = new Dictionary<int, List<DistanceEdRequest>>();
+
+
+    foreach(DistanceEdClass dec in allClasses)
+    {
+        requestsByClass.Add(dec.ID, new List<DistanceEdRequest>());
+    }
+
+    foreach(DistanceEdRequest der in allRequests)
+    {
+        if (!uniqueStudents.Contains(der.StudentNumber))
+        {
+            uniqueStudents.Add(der.StudentNumber);
+        }
+
+        if ((der.DistanceEdClass.Starts <= DateTime.Now) && (der.DistanceEdClass.Ends >= DateTime.Now))
+        {
+            if (!uniqueStudentsActive.Contains(der.StudentNumber))
+            {
+                uniqueStudentsActive.Add(der.StudentNumber);
+            }
+        }
+
+        if (requestsByClass.ContainsKey(der.CourseID))
+        {
+            requestsByClass[der.CourseID].Add(der);
+        }
+    }
+}
+
+<h1>Admin Index</h1>
+<p>Use the links above to navigate the admin section</p>
+<br />
+<h2>Stats</h2>
+<table border="0" class="table">
+    <tr>
+        <td>Total courses</td>
+        <td>@allClasses.Count()</td>
+    </tr>
+    <tr>
+        <td>Courses available for registration right now</td>
+        <td>@availableClasses.Count()</td>
+    </tr>
+    <tr>
+        <td>Total enrolments</td>
+        <td>@allRequests.Count()</td>
+    </tr>
+    <tr>
+        <td>Total unique students registered</td>
+        <td>@uniqueStudents.Count()</td>
+    </tr>
+    <tr>
+        <td>Total unique students in active courses</td>
+        <td>@uniqueStudentsActive.Count()</td>
+    </tr>
+</table>
+<br />
+<h2>Enrolments by course</h2>
+<br />
+<h3>Active courses</h3>
+<table border="0" class="table">
+    <tr>
+        <th>Course Name</th>
+        <th>Students Enrolled</th>
+    </tr>
+
+    @foreach(DistanceEdClass dec in allClasses.Where(x => x.Starts <= DateTime.Now && x.Ends >= DateTime.Now).OrderBy(x => x.Name))
+    {
+        <tr>
+            <td>@dec.Name</td>
+            <td>@requestsByClass[dec.ID].Count()</td>
+        </tr>
+    }
+
+</table>
+<br />
+<h3>Completed Courses</h3>
+<table border="0" class="table">
+    <tr>
+        <th>Course Name</th>
+        <th>Students Enrolled</th>
+    </tr>
+
+    @foreach (DistanceEdClass dec in allClasses.Where(x => x.Ends <= DateTime.Now).OrderBy(x => x.Name))
+    {
+        <tr>
+            <td>@dec.Name</td>
+            <td>@requestsByClass[dec.ID].Count()</td>
+        </tr>
+    }
+</table>
+

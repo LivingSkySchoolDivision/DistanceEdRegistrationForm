@@ -63,7 +63,7 @@ namespace LSSD.DistanceEdReg.Data
                     {
                         Connection = connection,
                         CommandType = CommandType.Text,
-                        CommandText = "INSERT INTO DistanceEdRequest(CourseId,StudentName,StudentNumber,StudentSchool,MentorTeacherName,Requestor,Comments,DateRequested) VALUES(@COURSEID,@STUDNAME,@STUDNUMBER,@STUDSCHOOL,@MENTORNAME,@REQUESTOR,@COMMENTs,GETDATE());"
+                        CommandText = "INSERT INTO DistanceEdRequest(CourseId,StudentName,StudentNumber,StudentSchool,MentorTeacherName,Requestor,Comments,DateRequested,NotificationSentToHelpDesk) VALUES(@COURSEID,@STUDNAME,@STUDNUMBER,@STUDSCHOOL,@MENTORNAME,@REQUESTOR,@COMMENTS,GETDATE(),@HELPDESKNOT);"
                     })
                     {
                         sqlCommand.Parameters.Clear();
@@ -73,7 +73,8 @@ namespace LSSD.DistanceEdReg.Data
                         sqlCommand.Parameters.AddWithValue("@STUDSCHOOL", NewRegistration.StudentBaseSchool);
                         sqlCommand.Parameters.AddWithValue("@MENTORNAME", NewRegistration.MentorTeacherName);
                         sqlCommand.Parameters.AddWithValue("@REQUESTOR", NewRegistration.Requestor);
-                        sqlCommand.Parameters.AddWithValue("@COMMENTs", NewRegistration.Comments);
+                        sqlCommand.Parameters.AddWithValue("@COMMENTS", NewRegistration.Comments);
+                        sqlCommand.Parameters.AddWithValue("@HELPDESKNOT", NewRegistration.HelpDeskNotificationSent);
                         sqlCommand.Connection.Open();
                         sqlCommand.ExecuteNonQuery();
                         sqlCommand.Connection.Close();
@@ -129,6 +130,41 @@ namespace LSSD.DistanceEdReg.Data
                     Connection = connection,
                     CommandType = CommandType.Text,
                     CommandText = "SELECT TOP 25 * FROM DistanceEdRequest WHERE NotificationSentToHelpDesk=0"
+                })
+                {
+                    sqlCommand.Connection.Open();
+                    SqlDataReader dbDataReader = sqlCommand.ExecuteReader();
+
+                    if (dbDataReader.HasRows)
+                    {
+                        while (dbDataReader.Read())
+                        {
+                            DistanceEdRequest obj = dataReaderToDistanceEdRequest(dbDataReader);
+                            if (obj != null)
+                            {
+                                returnMe.Add(obj);
+                            }
+                        }
+                    }
+
+                    sqlCommand.Connection.Close();
+                }
+            }
+
+            return returnMe;
+        }
+
+        public List<DistanceEdRequest> GetAll()
+        {
+            List<DistanceEdRequest> returnMe = new List<DistanceEdRequest>();
+
+            using (SqlConnection connection = new SqlConnection(_connStr))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand
+                {
+                    Connection = connection,
+                    CommandType = CommandType.Text,
+                    CommandText = "SELECT * FROM DistanceEdRequest"
                 })
                 {
                     sqlCommand.Connection.Open();

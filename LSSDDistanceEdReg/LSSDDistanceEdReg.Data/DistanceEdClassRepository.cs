@@ -39,7 +39,7 @@ namespace LSSD.DistanceEdReg.Data
                 RequiredMaterials = dataReader["RequiredMaterials"].ToString(),
                 MaterialsAvailableToTeachers = Parsers.ToBool(dataReader["AreMaterialsAvailable"].ToString()),
                 MentorTeacherRequired = Parsers.ToBool(dataReader["RequiresMentor"].ToString()),
-                BlackboardID = dataReader["BlackboardID"].ToString()
+                BlackboardID = dataReader["BlackboardID"].ToString()                
             };
         }
         
