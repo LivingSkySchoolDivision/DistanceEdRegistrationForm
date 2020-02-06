@@ -53,7 +53,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
 
                 DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(_config.GetConnectionString(FrontendSettings.ConnectionStringName));
                 DistanceEdRequestRepository requestRepo = new LSSD.DistanceEdReg.Data.DistanceEdRequestRepository(_config.GetConnectionString(FrontendSettings.ConnectionStringName));
-                Dictionary<int, DistanceEdClass> availableClasses = classesRepo.GetAvailableClasses(DateTime.Now).ToDictionary(x => x.ID);
+                Dictionary<int, DistanceEdClass> allClasses = classesRepo.GetAllClasses().ToDictionary(x => x.ID);
 
                 DistanceEdRequest newRequest = new DistanceEdRequest()
                 {
@@ -71,7 +71,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
 
                 if (courseID > 0)
                 {
-                    DistanceEdClass selectedClass = availableClasses[courseID] ?? null;
+                    DistanceEdClass selectedClass = allClasses[courseID] ?? null;
                     if (selectedClass == null)
                     {
                         regErrors.Add("Course with ID \"" + courseID + "\" was not found.");
