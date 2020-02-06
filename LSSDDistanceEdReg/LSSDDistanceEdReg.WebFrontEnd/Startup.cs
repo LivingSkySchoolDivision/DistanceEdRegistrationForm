@@ -31,7 +31,6 @@ namespace LSSDDistanceEdReg.WebFrontEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -58,10 +57,10 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 };
             });
             services.AddAuthorization(); 
-            */
-            services.AddRazorPages();/*.AddRazorPagesOptions(options => {
+            
+            services.AddRazorPages().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizeFolder("/Admin");
-            }); */
+            }); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,7 +87,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 RequestPath = "/Images"
             });
 
-            //app.UseAuthentication();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
