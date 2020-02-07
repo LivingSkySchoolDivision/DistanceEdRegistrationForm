@@ -189,6 +189,53 @@ namespace LSSD.DistanceEdReg.Data
             return returnMe;
         }
 
+
+        public List<DistanceEdRequest> GetForCourse(int courseID)
+        {
+            return GetForCourse(courseID.ToString());
+        }
+
+        public List<DistanceEdRequest> GetForCourse(DistanceEdClass course)
+        {
+            return GetForCourse(course.ID);
+        }
+
+        public List<DistanceEdRequest> GetForCourse(string courseID)
+        {
+            List<DistanceEdRequest> returnMe = new List<DistanceEdRequest>();
+
+            using (SqlConnection connection = new SqlConnection(_connStr))
+            {
+                using (SqlCommand sqlCommand = new SqlCommand
+                {
+                    Connection = connection,
+                    CommandType = CommandType.Text,
+                    CommandText = "SELECT * FROM DistanceEdRequest WHERE CourseId=@CID"
+                })
+                {
+                    sqlCommand.Parameters.AddWithValue("@CID", courseID);
+                    sqlCommand.Connection.Open();
+                    SqlDataReader dbDataReader = sqlCommand.ExecuteReader();
+
+                    if (dbDataReader.HasRows)
+                    {
+                        while (dbDataReader.Read())
+                        {
+                            DistanceEdRequest obj = dataReaderToDistanceEdRequest(dbDataReader);
+                            if (obj != null)
+                            {
+                                returnMe.Add(obj);
+                            }
+                        }
+                    }
+
+                    sqlCommand.Connection.Close();
+                }
+            }
+
+            return returnMe;
+        }
+
         public void AddNewRequest(DistanceEdRequest NewRequest)
         {
             AddNewRequests(new List<DistanceEdRequest>() { NewRequest });
