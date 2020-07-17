@@ -10,7 +10,7 @@ pipeline {
         stage('Git clone') {
             steps {
                 git branch: 'master',
-                    url: 'https://sourcecode.lskysd.ca/PublicCode/DistanceEdRegistrationForm.git'
+                    url: 'https://github.com/LivingSkySchoolDivision/DistanceEdRegistrationForm.git'
             }
         }
         stage('Test') {
@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 git branch: 'master',
-                    url: 'https://sourcecode.lskysd.ca/PublicCode/DistanceEdRegistrationForm.git'
+                    url: 'https://github.com/LivingSkySchoolDivision/DistanceEdRegistrationForm.git'
 
                 dir("LSSDDistanceEdReg"){
                     sh 'dotnet build'
