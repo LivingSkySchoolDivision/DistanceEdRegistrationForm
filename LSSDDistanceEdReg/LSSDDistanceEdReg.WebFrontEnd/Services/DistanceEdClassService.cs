@@ -35,5 +35,15 @@ namespace LSSDDistanceEdReg.WebFrontEnd.Services
             return _classRepo.Get(ID);
         }
 
+        public void Add(DistanceEdClass DEClass)
+        {
+            _classRepo.Add(DEClass);
+        }
+
+        public void Update(DistanceEdClass DEClass)
+        {
+            _classRepo.Update(DEClass);
+        }
+
     }
 }

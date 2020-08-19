@@ -19,6 +19,8 @@ namespace LSSD.DistanceEdReg
         public string RequiredMaterials { get; set; }
         public string BlackboardID { get; set; }
 
+        public bool IsRequestable { get; set; }
+
         // Are the teaching materials available for teachers to request, without 
         // having students in a class?
         public bool MaterialsAvailableToTeachers { get; set; }
