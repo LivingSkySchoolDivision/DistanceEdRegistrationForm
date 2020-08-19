@@ -98,8 +98,9 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 if (string.IsNullOrEmpty(studentSchool)) { regErrors.Add("Student base school is required"); }
                 if (string.IsNullOrEmpty(requestor)) { regErrors.Add("Requestor name is required"); }
 
-                // Mark as notified (unique to this form)
-                newRequest.HelpDeskNotificationSent = true;
+                Console.WriteLine(Request.Form["chkTriggerNotifications"].ToString());
+                                
+                newRequest.HelpDeskNotificationSent = !(Request.Form["chkTriggerNotifications"].ToString()?.ToLower() == "on");
 
                 // Submit to DB
                 if (regErrors.Count == 0)
