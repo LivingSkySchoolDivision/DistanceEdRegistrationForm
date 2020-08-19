@@ -3,14 +3,14 @@
 @using LSSD.DistanceEdReg.Data
 @using LSSD.DistanceEdReg.Util
 @using Microsoft.Extensions.Configuration;
-@inject IConfiguration config
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdClassService distanceEdClassService
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdRequestService distanceEdRequestService
 @model LSSDDistanceEdReg.WebFrontEnd.ByCourseModel
 @{
     ViewData["Title"] = "ByCourse";
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 
-    DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
-    List<DistanceEdClass> allClasses = classesRepo.GetAllClasses().OrderBy(x => x.Name).ToList();
+    List<DistanceEdClass> allClasses = distanceEdClassService.GetAll().OrderBy(x => x.Name).ToList();
 
     string courseIdString = RouteData.Values["Id"].ToString() ?? string.Empty;
     int selectedCourseID = courseIdString.ToInt();
@@ -18,16 +18,14 @@
 
     DistanceEdClass selectedCourse = null;
     if (selectedCourseID > 0)
-    {
-        selectedCourse = classesRepo.Get(selectedCourseID);
-
-        DistanceEdRequestRepository requestRepo = new DistanceEdRequestRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
-        selectedCourseRequests = requestRepo.GetForCourse(selectedCourse);
+    {        
+        selectedCourse = distanceEdClassService.Get(selectedCourseID);
+        selectedCourseRequests = distanceEdRequestService.GetForCourse(selectedCourse);
     }
 }
 
 <h1>Enrolments by Course</h1>
-<br/>
+<br />
 <form method="post" asp-page-handler="FormSubmit" style="display: inline;">
     <select class="custom-select-lg" name="drpCourse">
         @foreach (DistanceEdClass dec in allClasses.OrderBy(x => x.Name))
@@ -37,7 +35,8 @@
     </select>
     <button class="btn btn-primary large" style="margin-left: 10px;">Go</button>
 </form>
-<br/><br/>
+<br />
+<br />
 
 @if (selectedCourseID > 0)
 {
@@ -55,7 +54,7 @@
                     <th>Requested by</th>
                 </tr>
             </thead>
-            @foreach(DistanceEdRequest req in selectedCourseRequests.OrderBy(x => x.StudentName))
+            @foreach (DistanceEdRequest req in selectedCourseRequests.OrderBy(x => x.StudentName))
             {
                 <tr>
                     <td>@req.ID</td>
@@ -69,5 +68,5 @@
 
 
         </table>
-        }
     }
+}

@@ -3,21 +3,21 @@
 @using LSSD.DistanceEdReg.Data
 @using LSSD.DistanceEdReg.Util
 @using Microsoft.Extensions.Configuration;
-@inject IConfiguration config
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdClassService distanceEdClassService
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdRequestService distanceEdRequestService
 @model LSSDDistanceEdReg.WebFrontEnd.AllEnrolmentsModel
 @{
     ViewData["Title"] = "AllEnrolments";
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 
-    DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));    
-    DistanceEdRequestRepository requestRepo = new DistanceEdRequestRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));        
-    List<DistanceEdClass> allClasses = classesRepo.GetAllClasses().OrderBy(x => x.Name).ToList();
-    List<DistanceEdRequest> allRequests = requestRepo.GetAll();
+
+    List<DistanceEdClass> allClasses = distanceEdClassService.GetAll().OrderBy(x => x.Name).ToList();
+    List<DistanceEdRequest> allRequests = distanceEdRequestService.GetAll();
 }
 
 <h1>All Enrolments</h1>
 
-@foreach(DistanceEdClass course in allClasses)
+@foreach (DistanceEdClass course in allClasses)
 {
     <h2>@course.Name</h2>
     <p>
@@ -47,7 +47,8 @@
             </tr>
         }
     </table>
-    <br/><br/>
+    <br />
+    <br />
 }
 
 

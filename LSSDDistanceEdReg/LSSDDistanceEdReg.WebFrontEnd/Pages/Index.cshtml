@@ -3,14 +3,13 @@
 @using LSSD.DistanceEdReg.Data
 @using LSSD.DistanceEdReg.Util
 @using Microsoft.Extensions.Configuration;
-@inject IConfiguration config
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdClassService distanceEdClassService
 @model IndexModel
 @{
     ViewData["Title"] = "Register";
 
     // Create a list of courses to use later
-    DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
-    List<DistanceEdClass> availableClasses = classesRepo.GetAvailableClasses(DateTime.Now);
+    List<DistanceEdClass> availableClasses = distanceEdClassService.GetAllAvailable(DateTime.Now);
 
     DistanceEdClass displayedClass = null;
 
@@ -22,7 +21,7 @@
     if (!string.IsNullOrEmpty(courseIdString))
     {
         int courseIdParsed = courseIdString.ToInt();
-        DistanceEdClass selectedClass = classesRepo.Get(courseIdParsed);
+        DistanceEdClass selectedClass = distanceEdClassService.Get(courseIdParsed);
         if (selectedClass != null)
         {
             validCourseSelected = true;
