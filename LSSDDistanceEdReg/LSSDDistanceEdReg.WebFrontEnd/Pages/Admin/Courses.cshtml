@@ -1,0 +1,84 @@
+﻿@page
+@using LSSD.DistanceEdReg
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdClassService distanceEdClassService
+@model LSSDDistanceEdReg.WebFrontEnd.Pages.Admin.CoursesModel
+@{
+    ViewData["Title"] = "Courses";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Courses</h1>
+<br />
+<p><i>Do not</i> rename classes for the next school year - create new classes so that reporting can be done year-to-year.</p>
+<h3>Available right now</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Blackboard ID</th>
+            <th>Starts</th>
+            <th>Ends</th>
+            <th>Requestable</th>
+            <th>Materials available</th>
+            <th>Requires mentor</th>
+            <th>Delivery Method</th>
+            <th>Registration opens</th>
+            <th>Registration closes</th>
+        </tr>
+    </thead>
+    @foreach (DistanceEdClass cls in distanceEdClassService.GetAllAvailable(DateTime.Now))
+    {
+        <tr>
+            <td>@cls.ID</td>
+            <td>@cls.Name</td>
+            <td>@cls.BlackboardID</td>
+            <td>@cls.Starts</td>
+            <td>@cls.Ends</td>
+            <td>@(cls.IsRequestable ? "Yes" : "No")</td>
+            <td>@(cls.MaterialsAvailableToTeachers ? "Yes" : "No")</td>
+            <td>@(cls.MentorTeacherRequired ? "Yes" : "No")</td>
+            <td>@cls.DeliveryMethod</td>
+            <td>@cls.RegistrationAvailableFrom</td>
+            <td>@cls.RegistrationAvailableTo</td>
+        </tr>
+    }
+</table>
+<br/><br/>
+<h3>All</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Blackboard ID</th>
+            <th>Starts</th>
+            <th>Ends</th>
+            <th>Requestable</th>
+            <th>Materials available</th>
+            <th>Requires mentor</th>
+            <th>Delivery Method</th>
+            <th>Registration opens</th>
+            <th>Registration closes</th>
+        </tr>
+    </thead>
+    @foreach (DistanceEdClass cls in distanceEdClassService.GetAll())
+    {
+        <tr>
+            <td>@cls.ID</td>
+            <td>@cls.Name</td>
+            <td>@cls.BlackboardID</td>
+            <td>@cls.Starts</td>
+            <td>@cls.Ends</td>
+            <td>@(cls.IsRequestable ? "Yes" : "No")</td>
+            <td>@(cls.MaterialsAvailableToTeachers ? "Yes" : "No")</td>
+            <td>@(cls.MentorTeacherRequired ? "Yes" : "No")</td>
+            <td>@cls.DeliveryMethod</td>
+            <td>@cls.RegistrationAvailableFrom</td>
+            <td>@cls.RegistrationAvailableTo</td>
+        </tr>
+    }
+</table>
+<br />
+<br />
+

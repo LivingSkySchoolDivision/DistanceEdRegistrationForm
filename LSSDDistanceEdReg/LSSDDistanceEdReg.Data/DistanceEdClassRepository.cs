@@ -43,7 +43,7 @@ namespace LSSD.DistanceEdReg.Data
                 IsRequestable = Parsers.ToBool(dataReader["IsRequestable"].ToString())
             };
         }
-        
+
         public List<DistanceEdClass> GetAvailableClasses(DateTime ReferenceDate)
         {
             List<DistanceEdClass> returnMe = new List<DistanceEdClass>();
