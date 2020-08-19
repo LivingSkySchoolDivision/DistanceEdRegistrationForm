@@ -3,14 +3,14 @@
 @using LSSD.DistanceEdReg.Data
 @using LSSD.DistanceEdReg.Util
 @using Microsoft.Extensions.Configuration;
-@inject IConfiguration config
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdClassService distanceEdClassService
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdRequestService distanceEdRequestService
 @model LSSDDistanceEdReg.WebFrontEnd.ManualRegEntryModel
 @{
     ViewData["Title"] = "ManualRegEntry";
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 
-    DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
-    List<DistanceEdClass> allClasses = classesRepo.GetAllClasses().OrderBy(x => x.Name).ToList();
+    List<DistanceEdClass> allClasses = distanceEdClassService.GetAll().OrderBy(x => x.Name).ToList();
 }
 
 <h1>Manual Reg Entry</h1>

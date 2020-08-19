@@ -9,6 +9,7 @@ using LSSD.DistanceEdReg.Data;
 using LSSD.DistanceEdReg.Util;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using LSSDDistanceEdReg.WebFrontEnd.Services;
 
 namespace LSSDDistanceEdReg.WebFrontEnd
 {
@@ -18,11 +19,13 @@ namespace LSSDDistanceEdReg.WebFrontEnd
         public List<string> regErrors = new List<string>();
         public List<string> regSuccess = new List<string>();
 
-        private IConfiguration _config;
+        private DistanceEdRequestService _requestService;
+        private DistanceEdClassService _classService;
 
-        public ManualRegEntryModel(IConfiguration configuration, ILogger<ManualRegEntryModel> logger)
+        public ManualRegEntryModel(DistanceEdRequestService requestService, DistanceEdClassService classService, ILogger<ManualRegEntryModel> logger)
         {
-            this._config = configuration;
+            this._requestService = requestService;
+            this._classService = classService;
             _logger = logger;
         }
 
@@ -51,9 +54,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 // The easy way to do this would be check all submitted form elements for anything that starts with "chkClass_"
                 // The safe way to do this would be to load all valid classes, and compare to that list instead
 
-                DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(_config.GetConnectionString(FrontendSettings.ConnectionStringName));
-                DistanceEdRequestRepository requestRepo = new LSSD.DistanceEdReg.Data.DistanceEdRequestRepository(_config.GetConnectionString(FrontendSettings.ConnectionStringName));
-                Dictionary<int, DistanceEdClass> allClasses = classesRepo.GetAllClasses().ToDictionary(x => x.ID);
+                Dictionary<int, DistanceEdClass> allClasses = _classService.GetAll().ToDictionary(x => x.ID);
 
                 DistanceEdRequest newRequest = new DistanceEdRequest()
                 {
@@ -105,7 +106,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 {
                     try
                     {
-                        requestRepo.AddNewRequest(newRequest);
+                        _requestService.Add(newRequest);
                         regSuccess.Add("Successfully registered " + newRequest.StudentName + " in Course ID " + newRequest.CourseID);
                     }
                     catch (Exception ex)

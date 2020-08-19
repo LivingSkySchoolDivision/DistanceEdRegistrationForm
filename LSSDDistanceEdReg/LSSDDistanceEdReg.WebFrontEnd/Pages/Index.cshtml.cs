@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LSSD.DistanceEdReg;
 using LSSD.DistanceEdReg.Data;
 using LSSD.DistanceEdReg.Util;
+using LSSDDistanceEdReg.WebFrontEnd.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
@@ -17,11 +18,13 @@ namespace LSSDDistanceEdReg.WebFrontEnd.Pages
         private readonly ILogger<IndexModel> _logger;
         public List<string> regErrors = new List<string>();
 
-        private IConfiguration _config;
+        private DistanceEdRequestService _requestService;
+        private DistanceEdClassService _classService;
 
-        public IndexModel(IConfiguration configuration, ILogger<IndexModel> logger)
+        public IndexModel(DistanceEdRequestService requestService, DistanceEdClassService classService, ILogger<IndexModel> logger)
         {
-            this._config = configuration;
+            this._requestService = requestService;
+            this._classService = classService;
             _logger = logger;
         }
 
@@ -49,9 +52,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd.Pages
                 // The easy way to do this would be check all submitted form elements for anything that starts with "chkClass_"
                 // The safe way to do this would be to load all valid classes, and compare to that list instead
 
-                DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(_config.GetConnectionString(FrontendSettings.ConnectionStringName));
-                DistanceEdRequestRepository requestRepo = new LSSD.DistanceEdReg.Data.DistanceEdRequestRepository(_config.GetConnectionString(FrontendSettings.ConnectionStringName));
-                Dictionary<int, DistanceEdClass> availableClasses = classesRepo.GetAvailableClasses(DateTime.Now).ToDictionary(x => x.ID);
+                Dictionary<int, DistanceEdClass> availableClasses = _classService.GetAllAvailable(DateTime.Now).ToDictionary(x => x.ID);
                 
                 DistanceEdRequest newRequest = new DistanceEdRequest()
                 {
@@ -99,7 +100,7 @@ namespace LSSDDistanceEdReg.WebFrontEnd.Pages
                 {
                     try
                     {
-                        requestRepo.AddNewRequest(newRequest);
+                        _requestService.Add(newRequest);
                     }
                     catch (Exception ex)
                     {

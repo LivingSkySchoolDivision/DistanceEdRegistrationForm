@@ -4,17 +4,17 @@
 @using LSSD.DistanceEdReg.Util
 @model LSSDDistanceEdReg.WebFrontEnd.IndexModel
 @inject IConfiguration config
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdClassService distanceEdClassService
+@inject LSSDDistanceEdReg.WebFrontEnd.Services.DistanceEdRequestService distanceEdRequestService
 @using Microsoft.Extensions.Configuration;
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
 
-    DistanceEdClassRepository classesRepo = new DistanceEdClassRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
-    List<DistanceEdClass> allClasses = classesRepo.GetAllClasses();
-    List<DistanceEdClass> availableClasses = classesRepo.GetAvailableClasses(DateTime.Now);
+    List<DistanceEdClass> allClasses = distanceEdClassService.GetAll();
+    List<DistanceEdClass> availableClasses = distanceEdClassService.GetAllAvailable(DateTime.Now);
 
-    DistanceEdRequestRepository requestRepo = new DistanceEdRequestRepository(config.GetConnectionString(FrontendSettings.ConnectionStringName));
-    List<DistanceEdRequest> allRequests = requestRepo.GetAll();
+    List<DistanceEdRequest> allRequests = distanceEdRequestService.GetAll();
 
     List<string> uniqueStudents = new List<string>();
     List<string> uniqueStudentsActive = new List<string>();
@@ -151,7 +151,7 @@
         </tr>
     </thead>
 
-    @foreach(KeyValuePair<string, int> school in uniqueBaseSchools.OrderBy(school => school.Key))
+    @foreach (KeyValuePair<string, int> school in uniqueBaseSchools.OrderBy(school => school.Key))
     {
         <tr>
             <td>@school.Key</td>
@@ -172,7 +172,7 @@
         </tr>
     </thead>
 
-    @foreach(KeyValuePair<string, int> teacher in uniqueMentorTeachers.OrderBy(teacher => teacher.Key))
+    @foreach (KeyValuePair<string, int> teacher in uniqueMentorTeachers.OrderBy(teacher => teacher.Key))
     {
         <tr>
             <td>@teacher.Key</td>

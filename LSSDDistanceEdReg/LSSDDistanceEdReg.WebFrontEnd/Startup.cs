@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using LSSDDistanceEdReg.WebFrontEnd.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -60,7 +61,10 @@ namespace LSSDDistanceEdReg.WebFrontEnd
             
             services.AddRazorPages().AddRazorPagesOptions(options => {
                 options.Conventions.AuthorizeFolder("/Admin");
-            }); 
+            });
+
+            services.AddScoped<DistanceEdClassService>();
+            services.AddScoped<DistanceEdRequestService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
