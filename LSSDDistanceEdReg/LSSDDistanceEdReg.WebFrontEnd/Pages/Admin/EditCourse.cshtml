@@ -1,0 +1,28 @@
+﻿@page "{Id=0}"
+@model LSSDDistanceEdReg.WebFrontEnd.Pages.Admin.EditCourseModel
+@{
+    ViewData["Title"] = "EditCourse";
+    Layout = "~/Pages/Shared/_LayoutAdmin.cshtml";
+
+}
+
+<h1>Edit Course</h1>
+<br />
+
+@if (Model.SelectedClass == null)
+{
+    <p>Please specify a course id number.</p>
+    <p>If you have specified a course id number, then it is invalid. Sorry.</p>
+}
+else
+{
+    <H3>@Model.SelectedClass.Name</H3>   
+
+    <form method="post">
+        <input asp-for="@Model.SelectedClass.ID" hidden />
+        <input asp-for="@Model.SelectedClass.Name" />
+
+        <input type="submit" class="btn btn-primary">
+    </form>
+}
+
