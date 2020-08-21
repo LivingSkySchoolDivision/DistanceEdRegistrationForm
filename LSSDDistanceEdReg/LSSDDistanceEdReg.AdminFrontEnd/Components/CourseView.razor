@@ -1,0 +1,126 @@
+﻿@code {
+    [Parameter]
+    public LSSD.DistanceEdReg.DistanceEdClass SelectedDistanceEdClass { get; set; }
+}
+
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">Course Name: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.Name" placeholder=""></InputText>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.Name)" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">Course Description: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputTextArea id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.Description" placeholder=""></InputTextArea>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.Description)" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">MoreInfoURL: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.MoreInfoURL" placeholder=""></InputText>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.MoreInfoURL)" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">DeliveryMethod: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.DeliveryMethod" placeholder=""></InputText>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.DeliveryMethod)" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">PreRequisites </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.PreRequisites" placeholder=""></InputText>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.PreRequisites)" />
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">Blackboard ID: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.BlackboardID" placeholder=""></InputText>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.BlackboardID)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">Course Starts: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputDate id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.Starts" placeholder=""></InputDate>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.Starts)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">Course Ends: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputDate id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.Ends" placeholder=""></InputDate>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.Ends)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">Registration available starting: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputDate id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.RegistrationAvailableFrom" placeholder=""></InputDate>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.RegistrationAvailableFrom)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label for="requestorFirstName" class="font-weight-bold">Registration closes: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputDate id="requestorFirstName" class="form-control" @bind-Value="@SelectedDistanceEdClass.RegistrationAvailableTo" placeholder=""></InputDate>
+                <ValidationMessage For="@(() => SelectedDistanceEdClass.RegistrationAvailableTo)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="offset-sm-4 col-sm-8">
+                <InputCheckbox @bind-Value="@SelectedDistanceEdClass.IsRequestable"></InputCheckbox>
+                <label for="" class="">Course is requestable</label>
+                <ValidationMessage class="offset-sm-4 col-sm-8" For="@(() => SelectedDistanceEdClass.IsRequestable)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="offset-sm-4 col-sm-8">
+                <InputCheckbox @bind-Value="@SelectedDistanceEdClass.MaterialsAvailableToTeachers"></InputCheckbox>
+                <label for="" class="">Materials are avaiable for teacher requests</label>
+                <ValidationMessage class="offset-sm-4 col-sm-8" For="@(() => SelectedDistanceEdClass.MaterialsAvailableToTeachers)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="offset-sm-4 col-sm-8">
+                <InputCheckbox @bind-Value="@SelectedDistanceEdClass.MentorTeacherRequired"></InputCheckbox>
+                <label for="" class="">A "mentor teacher" is required at the student's base school</label>
+                <ValidationMessage class="offset-sm-4 col-sm-8" For="@(() => SelectedDistanceEdClass.MentorTeacherRequired)" />
+            </div>
+        </div>
+
+    </div>

@@ -7,7 +7,7 @@ namespace LSSD.DistanceEdReg
     public class DistanceEdClass
     {
         public int ID { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = "New Distance Ed Course";
         public string Description { get; set; }
         public DateTime Starts { get; set; }
         public DateTime Ends { get; set; }
@@ -18,6 +18,8 @@ namespace LSSD.DistanceEdReg
         public string PreRequisites { get; set; }
         public string RequiredMaterials { get; set; }
         public string BlackboardID { get; set; }
+
+        public bool IsRequestable { get; set; }
 
         // Are the teaching materials available for teachers to request, without 
         // having students in a class?

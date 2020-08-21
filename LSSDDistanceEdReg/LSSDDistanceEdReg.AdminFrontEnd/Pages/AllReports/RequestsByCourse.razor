@@ -1,0 +1,79 @@
+﻿@page "/allreports/requestsbycourse"
+@using LSSD.DistanceEdReg
+@using LSSD.DistanceEdReg.Util 
+@code {
+        [Inject]
+        LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdRequestService _RequestService { get; set; }
+
+        [Inject]
+        LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService _ClassService { get; set; }
+
+        DistanceEdClass SelectedClass = null;
+        List<DistanceEdRequest> selectedCourseRequests = new List<DistanceEdRequest>();
+        List<DistanceEdClass> activeClasses = new List<DistanceEdClass>();
+
+    protected override void OnInitialized()
+    {
+        activeClasses = _ClassService.GetAllAvailable(DateTime.Now);
+    }
+
+    private void OnClick_SelectCourse(ChangeEventArgs e)
+    {
+        Console.WriteLine(e.Value.ToString());
+        if (!string.IsNullOrEmpty(e.Value.ToString()))
+        {
+            int id = e.Value.ToString().ToInt();
+            if (id > 1)
+            {
+                SelectedClass = _ClassService.Get(id);
+                if (SelectedClass != null)
+                {
+                    selectedCourseRequests = _RequestService.GetForCourse(SelectedClass);
+                }
+            }
+        }
+    }
+}
+<select class="custom-select-lg" name="drpCourse" @onchange="OnClick_SelectCourse">
+    <option value=""></option>
+    @foreach (DistanceEdClass dec in activeClasses.OrderBy(x => x.Name))
+    {
+        <option value="@dec.ID">@dec.Name</option>
+    }
+</select>
+<br />
+
+@if (SelectedClass != null)
+{
+    <h2>All requests for @SelectedClass.Name</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Student Name</th>
+                <th>Student Number</th>
+                <th>Base School</th>
+                <th>Mentor Teacher</th>
+                <th>Requested by</th>
+            </tr>
+        </thead>
+        @foreach (DistanceEdRequest req in selectedCourseRequests.OrderBy(x => x.StudentName))
+        {
+            <tr>
+                <td>@req.ID</td>
+                <td>@req.StudentName</td>
+                <td>@req.StudentNumber</td>
+                <td>@req.StudentBaseSchool</td>
+                <td>@req.MentorTeacherName</td>
+                <td>@req.Requestor</td>
+            </tr>
+        }
+    </table>
+
+}
+
+
+
+
+
+

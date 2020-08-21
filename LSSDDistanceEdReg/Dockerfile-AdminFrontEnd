@@ -1,0 +1,25 @@
+#See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
+
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+WORKDIR /src
+COPY ["LSSDDistanceEdReg.AdminFrontEnd/LSSDDistanceEdReg.AdminFrontEnd.csproj", "LSSDDistanceEdReg.AdminFrontEnd/"]
+COPY ["LSSDDistanceEdReg.Data/LSSDDistanceEdReg.Data.csproj", "LSSDDistanceEdReg.Data/"]
+COPY ["LSSDDistanceEdReg.Domain/LSSDDistanceEdReg.Domain.csproj", "LSSDDistanceEdReg.Domain/"]
+COPY ["LSSDDistanceEdReg.Util/LSSDDistanceEdReg.Util.csproj", "LSSDDistanceEdReg.Util/"]
+RUN dotnet restore "LSSDDistanceEdReg.AdminFrontEnd/LSSDDistanceEdReg.AdminFrontEnd.csproj"
+COPY . .
+WORKDIR "/src/LSSDDistanceEdReg.AdminFrontEnd"
+RUN dotnet build "LSSDDistanceEdReg.AdminFrontEnd.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "LSSDDistanceEdReg.AdminFrontEnd.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "LSSDDistanceEdReg.AdminFrontEnd.dll"]

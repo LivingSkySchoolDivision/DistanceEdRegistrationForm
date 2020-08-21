@@ -32,36 +32,9 @@ namespace LSSDDistanceEdReg.WebFrontEnd
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOpenIdConnect(options =>
-            {
-                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.Authority = Configuration["OIDC:Authority"];
-                options.RequireHttpsMetadata = true;
-                options.ClientId = Configuration["OIDC:ClientId"];
-                options.ClientSecret = Configuration["OIDC:ClientSecret"];
-                options.ResponseType = OpenIdConnectResponseType.Code;
-                options.GetClaimsFromUserInfoEndpoint = true;
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.SaveTokens = false;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    NameClaimType = "name",
-                    RoleClaimType = "groups",
-                    ValidateIssuer = true
-                };
-            });
             services.AddAuthorization(); 
             
-            services.AddRazorPages().AddRazorPagesOptions(options => {
-                options.Conventions.AuthorizeFolder("/Admin");
-            });
+            services.AddRazorPages();
 
             services.AddScoped<DistanceEdClassService>();
             services.AddScoped<DistanceEdRequestService>();
@@ -91,7 +64,6 @@ namespace LSSDDistanceEdReg.WebFrontEnd
                 RequestPath = "/Images"
             });
 
-            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

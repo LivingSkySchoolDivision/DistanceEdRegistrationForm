@@ -1,0 +1,92 @@
+﻿@page "/courses"
+@using LSSD.DistanceEdReg
+@code {
+
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService _ClassService { get; set; }
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdRequestService _RequestService { get; set; }
+
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+
+    protected void OnClick_AddNewCourse()
+    {
+        NavigationManager.NavigateTo("/AddCourse");
+    }
+}
+
+<h1>Courses</h1>
+<br/>
+<button type="button" @onclick="OnClick_AddNewCourse" class="btn btn-secondary"><span class="oi oi-plus" aria-hidden="true"></span> Add new course</button>
+<br />
+<p><i>Do not</i> rename classes for the next school year - create new classes so that reporting can be done year-to-year.</p>
+<h3>Available right now</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Blackboard ID</th>
+            <th>Starts</th>
+            <th>Ends</th>
+            <th>Requestable</th>
+            <th>Materials available</th>
+            <th>Requires mentor</th>
+            <th>Delivery Method</th>
+            <th>Registration opens</th>
+            <th>Registration closes</th>
+        </tr>
+    </thead>
+    @foreach (DistanceEdClass cls in _ClassService.GetAllAvailable(DateTime.Now))
+    {
+        <tr>
+            <td><a href="EditCourse/@cls.ID">@cls.Name</a></td>
+            <td>@cls.BlackboardID</td>
+            <td>@cls.Starts.ToShortDateString()</td>
+            <td>@cls.Ends.ToShortDateString()</td>
+            <td>@(cls.IsRequestable ? "Yes" : "No")</td>
+            <td>@(cls.MaterialsAvailableToTeachers ? "Yes" : "No")</td>
+            <td>@(cls.MentorTeacherRequired ? "Yes" : "No")</td>
+            <td>@cls.DeliveryMethod</td>
+            <td>@cls.RegistrationAvailableFrom.ToShortDateString()</td>
+            <td>@cls.RegistrationAvailableTo.ToShortDateString()</td>
+        </tr>
+    }
+</table>
+<br />
+<br />
+<h3>All</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Blackboard ID</th>
+            <th>Starts</th>
+            <th>Ends</th>
+            <th>Requestable</th>
+            <th>Materials available</th>
+            <th>Requires mentor</th>
+            <th>Delivery Method</th>
+            <th>Registration opens</th>
+            <th>Registration closes</th>
+        </tr>
+    </thead>
+    @foreach (DistanceEdClass cls in _ClassService.GetAll())
+    {
+<tr>
+    <td>@cls.ID</td>
+    <td><a href="EditCourse/@cls.ID">@cls.Name</a></td>
+    <td>@cls.BlackboardID</td>
+    <td>@cls.Starts.ToShortDateString()</td>
+    <td>@cls.Ends.ToShortDateString()</td>d
+    <td>@(cls.IsRequestable ? "Yes" : "No")</td>
+    <td>@(cls.MaterialsAvailableToTeachers ? "Yes" : "No")</td>
+    <td>@(cls.MentorTeacherRequired ? "Yes" : "No")</td>
+    <td>@cls.DeliveryMethod</td>
+    <td>@cls.RegistrationAvailableFrom.ToShortDateString()</td>
+    <td>@cls.RegistrationAvailableTo.ToShortDateString()</td>
+</tr>
+    }
+</table>
+<br />
+<br />

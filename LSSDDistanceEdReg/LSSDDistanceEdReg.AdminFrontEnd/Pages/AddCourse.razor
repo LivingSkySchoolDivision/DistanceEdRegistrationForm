@@ -1,0 +1,61 @@
+﻿@page "/AddCourse"
+@using LSSD.DistanceEdReg
+@code {
+
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService _ClassService { get; set; }
+
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdRequestService _RequestService { get; set; }
+
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+
+
+    DistanceEdClass SelectedDistanceEdClass = new DistanceEdClass();
+
+    protected override void OnInitialized()
+    {
+    }
+
+    protected void HandleValidSubmit()
+    {
+        // Save the data
+        _ClassService.Add(SelectedDistanceEdClass);
+        NavigationManager.NavigateTo("/Courses");
+    }
+
+    protected void HandleInValidSubmit()
+    {
+        // Do nothing
+    }
+
+    protected void OnClick_PreviousStepButton()
+    {
+        NavigationManager.NavigateTo("/Courses");
+    }
+
+
+}
+<div class="text-left p-5">
+    <h1>@SelectedDistanceEdClass.Name</h1>
+
+    <EditForm Model="SelectedDistanceEdClass" OnValidSubmit="@HandleValidSubmit" OnInvalidSubmit="@HandleInValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <LSSDDistanceEdReg.AdminFrontEnd.Components.CourseView SelectedDistanceEdClass="@SelectedDistanceEdClass" />
+
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col">
+                    <button type="button" @onclick="OnClick_PreviousStepButton" class="btn btn-secondary">Back to course list</button>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+
+    </EditForm>
+</div>
