@@ -1,4 +1,5 @@
-﻿@page "/AddCourse"
+﻿@page "/AddCourse/"
+@page "/AddCourse/{id:int}"
 @using LSSD.DistanceEdReg
 @code {
 
@@ -11,11 +12,24 @@
     [Inject]
     NavigationManager NavigationManager { get; set; }
 
+    [Parameter]
+    public int? Id { get; set; }
 
     DistanceEdClass SelectedDistanceEdClass = new DistanceEdClass();
 
     protected override void OnInitialized()
     {
+        if (Id != null)
+        {
+            if (Id > 0)
+            {
+                DistanceEdClass dec = _ClassService.Get(Id.GetValueOrDefault());
+                if (dec != null)
+                {
+                    SelectedDistanceEdClass = dec;
+                }
+            }
+        }
     }
 
     protected void HandleValidSubmit()
