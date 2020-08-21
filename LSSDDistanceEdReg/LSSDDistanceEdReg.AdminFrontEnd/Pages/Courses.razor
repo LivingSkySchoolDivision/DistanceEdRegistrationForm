@@ -9,6 +9,17 @@
     [Inject]
     NavigationManager NavigationManager { get; set; }
 
+    List<DistanceEdClass> activeClasses = new List<DistanceEdClass>();
+    List<DistanceEdClass> inactiveClasses = new List<DistanceEdClass>();
+
+    protected override void OnInitialized()
+    {
+        activeClasses = _ClassService.GetAllAvailable(DateTime.Now).OrderBy(x => x.Name).ToList();
+        List<int> activeClassIds = activeClasses.Select(x => x.ID).ToList();
+        inactiveClasses = _ClassService.GetAll().Where(x => !activeClassIds.Contains(x.ID)).OrderBy(x => x.Name).ToList();
+    }
+
+
     protected void OnClick_AddNewCourse()
     {
         NavigationManager.NavigateTo("/AddCourse");
@@ -37,7 +48,7 @@
             <th>Clone</th>
         </tr>
     </thead>
-    @foreach (DistanceEdClass cls in _ClassService.GetAllAvailable(DateTime.Now))
+    @foreach (DistanceEdClass cls in activeClasses)
     {
         <tr>
             <td><a href="EditCourse/@cls.ID">@cls.Name</a></td>
@@ -56,11 +67,10 @@
 </table>
 <br />
 <br />
-<h3>All</h3>
+<h3>Inactive</h3>
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Name</th>
             <th>Blackboard ID</th>
             <th>Starts</th>
@@ -74,10 +84,9 @@
             <th>Clone</th>
         </tr>
     </thead>
-    @foreach (DistanceEdClass cls in _ClassService.GetAll())
+    @foreach (DistanceEdClass cls in inactiveClasses)
     {
         <tr>
-            <td>@cls.ID</td>
             <td><a href="EditCourse/@cls.ID">@cls.Name</a></td>
             <td>@cls.BlackboardID</td>
             <td>@cls.Starts.ToShortDateString()</td>
