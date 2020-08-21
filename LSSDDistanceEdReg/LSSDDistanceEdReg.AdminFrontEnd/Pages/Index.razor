@@ -3,21 +3,21 @@
 @inject LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService distanceEdClassService
 @inject LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdRequestService distanceEdRequestService
 @{
-    List<DistanceEdClass> allClasses = distanceEdClassService.GetAll();
     List<DistanceEdClass> availableClasses = distanceEdClassService.GetAllAvailable(DateTime.Now);
+    List<int> activeClassIDs = availableClasses.Select(c => c.ID).ToList<int>();
 
-    List<DistanceEdRequest> allRequests = distanceEdRequestService.GetAll();
+    List<DistanceEdRequest> allRequests = distanceEdRequestService.GetAll().Where(r => activeClassIDs.Contains(r.CourseID)).ToList();
 
     List<string> uniqueStudents = new List<string>();
     List<string> uniqueStudentsActive = new List<string>();
 
-    Dictionary<int, DistanceEdClass> classDict = allClasses.ToDictionary(x => x.ID);
+    Dictionary<int, DistanceEdClass> classDict = availableClasses.ToDictionary(x => x.ID);
     Dictionary<int, List<DistanceEdRequest>> requestsByClass = new Dictionary<int, List<DistanceEdRequest>>();
 
     Dictionary<string, int> uniqueBaseSchools = new Dictionary<string, int>();
     Dictionary<string, int> uniqueMentorTeachers = new Dictionary<string, int>();
 
-    foreach (DistanceEdClass dec in allClasses)
+    foreach (DistanceEdClass dec in availableClasses)
     {
         requestsByClass.Add(dec.ID, new List<DistanceEdRequest>());
     }
@@ -55,14 +55,8 @@
         uniqueMentorTeachers[der.MentorTeacherName]++;
     }
 }
-<p>Use the links above to navigate the admin section</p>
-<br />
 <h2>Stats</h2>
 <table border="0" class="table">
-    <tr>
-        <td>Total courses</td>
-        <td>@allClasses.Count()</td>
-    </tr>
     <tr>
         <td>Courses available for registration right now</td>
         <td>@availableClasses.Count()</td>
@@ -100,7 +94,7 @@
         </tr>
     </thead>
 
-    @foreach (DistanceEdClass dec in allClasses.Where(x => x.Starts <= DateTime.Now && x.Ends >= DateTime.Now).OrderBy(x => x.Name))
+    @foreach (DistanceEdClass dec in availableClasses.OrderBy(x => x.Name))
     {
         <tr>
             <td>@dec.Name</td>
@@ -108,24 +102,6 @@
         </tr>
     }
 
-</table>
-<br />
-<h4>Completed Courses</h4>
-<table border="0" class="table">
-    <thead>
-        <tr>
-            <th>Course Name</th>
-            <th>Students Enrolled</th>
-        </tr>
-    </thead>
-
-    @foreach (DistanceEdClass dec in allClasses.Where(x => x.Ends <= DateTime.Now).OrderBy(x => x.Name))
-    {
-        <tr>
-            <td>@dec.Name</td>
-            <td>@requestsByClass[dec.ID].Count()</td>
-        </tr>
-    }
 </table>
 <br />
 <h2>Base Schools</h2>

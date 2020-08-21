@@ -34,6 +34,7 @@
             <th>Delivery Method</th>
             <th>Registration opens</th>
             <th>Registration closes</th>
+            <th>Clone</th>
         </tr>
     </thead>
     @foreach (DistanceEdClass cls in _ClassService.GetAllAvailable(DateTime.Now))
@@ -49,6 +50,7 @@
             <td>@cls.DeliveryMethod</td>
             <td>@cls.RegistrationAvailableFrom.ToShortDateString()</td>
             <td>@cls.RegistrationAvailableTo.ToShortDateString()</td>
+            <td><a href="Addcourse/@cls.ID">Clone</a></td>
         </tr>
     }
 </table>
@@ -69,23 +71,25 @@
             <th>Delivery Method</th>
             <th>Registration opens</th>
             <th>Registration closes</th>
+            <th>Clone</th>
         </tr>
     </thead>
     @foreach (DistanceEdClass cls in _ClassService.GetAll())
     {
-<tr>
-    <td>@cls.ID</td>
-    <td><a href="EditCourse/@cls.ID">@cls.Name</a></td>
-    <td>@cls.BlackboardID</td>
-    <td>@cls.Starts.ToShortDateString()</td>
-    <td>@cls.Ends.ToShortDateString()</td>d
-    <td>@(cls.IsRequestable ? "Yes" : "No")</td>
-    <td>@(cls.MaterialsAvailableToTeachers ? "Yes" : "No")</td>
-    <td>@(cls.MentorTeacherRequired ? "Yes" : "No")</td>
-    <td>@cls.DeliveryMethod</td>
-    <td>@cls.RegistrationAvailableFrom.ToShortDateString()</td>
-    <td>@cls.RegistrationAvailableTo.ToShortDateString()</td>
-</tr>
+        <tr>
+            <td>@cls.ID</td>
+            <td><a href="EditCourse/@cls.ID">@cls.Name</a></td>
+            <td>@cls.BlackboardID</td>
+            <td>@cls.Starts.ToShortDateString()</td>
+            <td>@cls.Ends.ToShortDateString()</td>
+            <td>@(cls.IsRequestable ? "Yes" : "No")</td>
+            <td>@(cls.MaterialsAvailableToTeachers ? "Yes" : "No")</td>
+            <td>@(cls.MentorTeacherRequired ? "Yes" : "No")</td>
+            <td>@cls.DeliveryMethod</td>
+            <td>@cls.RegistrationAvailableFrom.ToShortDateString()</td>
+            <td>@cls.RegistrationAvailableTo.ToShortDateString()</td>
+            <td><a href="Addcourse/@cls.ID">Clone</a></td>
+        </tr>
     }
 </table>
 <br />
