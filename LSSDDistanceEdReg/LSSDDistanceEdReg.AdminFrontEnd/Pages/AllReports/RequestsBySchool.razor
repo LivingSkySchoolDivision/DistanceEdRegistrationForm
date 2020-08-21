@@ -1,0 +1,59 @@
+﻿@page "/allreports/requestsbyschool"
+@using LSSD.DistanceEdReg
+@code {
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdRequestService _RequestService { get; set; }
+
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService _ClassService { get; set; }
+
+    List<DistanceEdRequest> allRequests = new List<DistanceEdRequest>();
+
+    protected override void OnInitialized()
+    {
+        List<int> activeClasses = _ClassService.GetAllAvailable(DateTime.Now).Select(c => c.ID).ToList<int>();
+
+        allRequests = _RequestService.GetAll().Where(r => activeClasses.Contains(r.CourseID)).ToList();
+    }
+}
+
+
+<h1>All Requests by Base School</h1>
+<p>Active courses only</p>
+
+@foreach (string school in allRequests.Select(x => x.StudentBaseSchool)
+           .Distinct()
+           .OrderBy(school => school)
+)
+{
+    <h1>@school</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Course</th>
+                <th>Student Name</th>
+                <th>Student Number</th>
+                <th>Mentor teacher</th>
+                <th>Requested by</th>
+            </tr>
+        </thead>
+        @foreach (DistanceEdRequest request in allRequests
+        .Where(request => request.StudentBaseSchool == school)
+        .OrderBy(request => request.DistanceEdClass.Name)
+        .ThenBy(request => request.StudentName)
+        )
+        {
+            <tr>
+                <td>@request.DistanceEdClass.Name</td>
+                <td>@request.StudentName</td>
+                <td>@request.StudentNumber</td>
+                <td>@request.MentorTeacherName</td>
+                <td>@request.Requestor</td>
+            </tr>
+        }
+    </table>
+
+}
+
+
