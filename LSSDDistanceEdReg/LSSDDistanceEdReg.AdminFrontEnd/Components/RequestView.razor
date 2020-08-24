@@ -1,0 +1,123 @@
+﻿@using LSSDDistanceEdReg.AdminFrontEnd.Controls
+@code {
+    [Parameter]
+    public LSSD.DistanceEdReg.DistanceEdRequest NewRequestObject { get; set; }
+
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService _ClassService { get; set; }
+
+    string courseIdString;
+
+    private async void  OnUpdateCourseDropdown(ChangeEventArgs e)
+    {
+        Console.Write(e.Value.ToString());
+        
+    }
+
+
+}
+
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Student Name: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText  class="form-control" @bind-Value="@NewRequestObject.StudentName" placeholder=""></InputText>
+                <ValidationMessage For="@(() => NewRequestObject.StudentName)" />
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Student Number: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText  class="form-control" @bind-Value="@NewRequestObject.StudentNumber" placeholder=""></InputText>
+                <ValidationMessage For="@(() => NewRequestObject.StudentNumber)" />
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Student Base School: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText  class="form-control" @bind-Value="@NewRequestObject.StudentBaseSchool" placeholder=""></InputText>
+                <ValidationMessage For="@(() => NewRequestObject.StudentBaseSchool)" />
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Comments: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputTextArea  class="form-control" @bind-Value="@NewRequestObject.Comments" placeholder=""></InputTextArea>
+                <ValidationMessage For="@(() => NewRequestObject.Comments)" />
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Mentor Teacher Name: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText  class="form-control" @bind-Value="@NewRequestObject.MentorTeacherName" placeholder=""></InputText>
+                <ValidationMessage For="@(() => NewRequestObject.MentorTeacherName)" />
+            </div>
+        </div>
+
+
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Requestor: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputText  class="form-control" @bind-Value="@NewRequestObject.Requestor" placeholder=""></InputText>
+                <ValidationMessage For="@(() => NewRequestObject.Requestor)" />
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Date Requested: </label>
+            </div>
+            <div class="col-sm-4">
+                <InputDate  class="form-control" @bind-Value="@NewRequestObject.DateRequested" placeholder=""></InputDate>
+                <ValidationMessage For="@(() => NewRequestObject.DateRequested)" />
+            </div>
+        </div>
+
+
+        <div class="form-row">
+            <div class="col-sm-3">
+                <label class="font-weight-bold">Course: </label>
+            </div>
+            <div class="col-sm-4">
+                <ValidationMessage For="@(() => NewRequestObject.DistanceEdClass)" />
+                <InputSelectNumber id="RequestCourse" @bind-Value="@NewRequestObject.CourseID">
+                    @foreach (var c in _ClassService.GetAll().OrderBy(x => x.Name))
+                    {
+                        <option value="@c.ID">@(c.Name)</option>
+                    }
+                </InputSelectNumber>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="offset-sm-3 col-sm-3">
+                <div class="col-sm-8">
+                    <InputCheckbox class="form-control" @bind-Value="@NewRequestObject.HelpDeskNotificationSent"></InputCheckbox>
+                    <label for="" class="">Do not trigger notifications for this request</label>
+                    <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => NewRequestObject.HelpDeskNotificationSent)" />
+                </div>
+            </div>
+        </div>
+
+    </div>
