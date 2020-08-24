@@ -59,6 +59,11 @@ namespace LSSD.DistanceEdReg.Data
 
                 foreach (DistanceEdRequest NewRegistration in NewRequests)
                 {
+                    if ((NewRegistration.CourseID == 0) && NewRegistration.DistanceEdClass != null)
+                    {
+                        NewRegistration.CourseID = NewRegistration.DistanceEdClass.ID;
+                    }
+
                     using (SqlCommand sqlCommand = new SqlCommand
                     {
                         Connection = connection,

@@ -2,15 +2,16 @@
 @using LSSD.DistanceEdReg
 @using LSSD.DistanceEdReg.Util 
 @code {
-        [Inject]
-        LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdRequestService _RequestService { get; set; }
 
-        [Inject]
-        LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService _ClassService { get; set; }
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdRequestService _RequestService { get; set; }
 
-        DistanceEdClass SelectedClass = null;
-        List<DistanceEdRequest> selectedCourseRequests = new List<DistanceEdRequest>();
-        List<DistanceEdClass> activeClasses = new List<DistanceEdClass>();
+    [Inject]
+    LSSDDistanceEdReg.AdminFrontEnd.Services.DistanceEdClassService _ClassService { get; set; }
+
+    DistanceEdClass SelectedClass = null;
+    List<DistanceEdRequest> selectedCourseRequests = new List<DistanceEdRequest>();
+    List<DistanceEdClass> activeClasses = new List<DistanceEdClass>();
 
     protected override void OnInitialized()
     {
