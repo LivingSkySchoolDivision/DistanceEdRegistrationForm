@@ -88,6 +88,10 @@ namespace LSSDDistanceEdReg.EmailRunner
                     catch(Exception ex)
                     {
                         ConsoleWrite("ERROR: " + ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            ConsoleWrite(" EXCEPTION: " + ex.InnerException.Message);
+                        }
                     }
                     ConsoleWrite("Done!");
                     ConsoleWrite("Sleeping for " + sleepTimeMinutes + " minutes...");
